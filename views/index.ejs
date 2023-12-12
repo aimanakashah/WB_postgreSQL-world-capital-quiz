@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Capital City Quiz</title>
+    <link rel="stylesheet" href="/styles/main.css" />
+  </head>
+
+  <body id="app">
+    <form class="container" action="/submit" method="post">
+      <!-- will call the app.post express.js method in .js when button was click -->
+      <div class="horizontal-container">
+        <h3>
+          Total Score:
+          <span id="score"> <%= locals.totalScore ? totalScore : "0" %> </span>
+          <!-- ? totalScore : "0": This is the ternary conditional (ternary) operator. If the expression before the ? is true, it evaluates to totalScore; otherwise, it evaluates to "0". -->
+        </h3>
+      </div>
+
+      <h1 id="countryName"><%=question.country %></h1>
+      <div class="answer-container">
+        <input
+          type="text"
+          name="answer"
+          id="userInput"
+          placeholder="Enter the capital"
+          autofocus
+          autocomplete="off"
+        />
+        <!-- name here will be used to pass to index.js to check the answer -->
+        <!-- autofocus autocomplete is off so that when loaded user dont need to click the input to type, and no suggestion from past entries will appear for new input -->
+      </div>
+      <button type="submit">
+        <!-- when submit was clicked, it will trigger the action of the form to the route /submit  -->
+        SUBMIT<% if(locals.wasCorrect){ %>
+        <span class="checkmark">✔</span>
+        <% } else if (locals.wasCorrect===false) { %>
+        <span class="cross" id="error">✖</span>
+        <!-- inside the button is JS operation to deliver the checkmark symbol, if true, and false -->
+        <% } %>
+      </button>
+    </form>
+    <script>
+      var wasCorrect = "<%= locals.wasCorrect %>";
+      console.log(wasCorrect);
+      if (wasCorrect === "false") {
+        alert("Game over! Final best score: <%= locals.totalScore %>");
+        document.getElementById("app").innerHTML =
+          '<a href="/" class="restart-button">Restart</a>';
+      }
+    </script>
+  </body>
+</html>
